@@ -1,0 +1,49 @@
+<div class="container">
+  <h1>Machines</h1>
+
+  <div class="text-center" *ngIf="machines.length === 0">
+    No machines found.
+  </div>
+  <table class="table table-light" *ngIf="machines.length > 0">
+    <thead>
+      <tr>
+        <th>Machine Name</th>
+        <th>Wash Type</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let m of machines">
+        <td>{{ m.MachineName }}</td>
+        <td>{{ getWashTypeName(m.WashTypeId) }}</td>
+        <td>{{ m.IsActive ? "Yes" : "No" }}</td>
+        <td>
+          <button
+            class="btn btn-success"
+            *ngIf="m.Status === 'Available'"
+            (click)="reserve(m)"
+          >
+            Reserve
+          </button>
+
+          <button
+            class="btn btn-danger"
+            *ngIf="m.Status === 'Reserved by you'"
+            (click)="cancelReservation(m)"
+          >
+            Cancel
+          </button>
+
+          <button
+            class="btn btn-secondary"
+            *ngIf="m.Status === 'Reserve by other'"
+            (click)="joinWaitlist(m)"
+          >
+            Join Waitlist
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
