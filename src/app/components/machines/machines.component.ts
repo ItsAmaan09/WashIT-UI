@@ -4,8 +4,6 @@ import { Machine } from '../../models/machine';
 import { CommonModule } from '@angular/common';
 import { WashType } from '../../utility/enums/washType';
 import { forkJoin, map, switchMap } from 'rxjs';
-import { CancelReservation } from '../../models/cancelReservation';
-import { Reservation } from '../../models/reservation';
 
 @Component({
   selector: 'app-machines',
