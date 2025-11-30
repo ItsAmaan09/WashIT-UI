@@ -1,11 +1,10 @@
 import { Routes } from '@angular/router';
 import { MachinesComponent } from './components/machines/machines.component';
-import { ReserveComponent } from './components/reserve/reserve.component';
-import { WaitingComponent } from './components/waiting/waiting.component';
+import { AuthGuard } from './utility/auth.guard';
+import { LoginComponent } from './components/login/login.component';
 
 export const routes: Routes = [
-  { path: 'home', component: MachinesComponent },
-  { path: 'reserve/:id', component: ReserveComponent },
-  { path: 'waiting', component: WaitingComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { path: 'home', component: MachinesComponent, canActivate: [AuthGuard] },
 ];

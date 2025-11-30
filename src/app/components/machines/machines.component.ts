@@ -10,6 +10,7 @@ import { Reservation } from '../../models/reservation';
 @Component({
   selector: 'app-machines',
   imports: [CommonModule],
+  standalone: true,
   templateUrl: './machines.component.html',
   styleUrl: './machines.component.scss',
 })
