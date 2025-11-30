@@ -18,6 +18,8 @@
   </nav>
 </div>
 
+<!-- Your machine list UI -->
+
 <div class="container">
   <div>
     <h2>WashIt Machines</h2>
@@ -44,21 +46,21 @@
           <button
             class="btn btn-success btn-sm"
             *ngIf="m.Status === 'Available'"
-            (click)="reserve(m.WashTypeId)"
+            (click)="reserve(m)"
           >
             Reserve
           </button>
           <button
             class="btn btn-danger btn-sm"
             *ngIf="m.Status === 'Reserved by you'"
-            (click)="cancelReservation(m.ReservationId)"
+            (click)="cancelReservation(m)"
           >
             Cancel
           </button>
           <button
             class="btn btn-secondary btn-sm"
             *ngIf="m.Status === 'Reserved by other'"
-            (click)="joinWaitlist(m.WashTypeId)"
+            (click)="joinWaitlist(m)"
           >
             Join Waitlist
           </button>
