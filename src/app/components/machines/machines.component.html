@@ -1,25 +1,32 @@
 <div>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">WashIt</a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-      </ul>
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">WashIt</a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <button class="btn btn-outline-danger" (click)="logout()">
+          Logout
+        </button>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
 </div>
 
 <div class="container">
-  <h1>Machines</h1>
+  <div>
+    <h2>WashIt Machines</h2>
+  </div>
 
   <div class="text-center" *ngIf="machines.length === 0">
     No machines found.
   </div>
-  <table class="table table-light" *ngIf="machines.length > 0">
+  <table class="table table-striped" *ngIf="machines.length > 0">
     <thead>
       <tr>
         <th>Machine Name</th>
@@ -35,24 +42,22 @@
         <td>{{ m.IsActive ? "Yes" : "No" }}</td>
         <td>
           <button
-            class="btn btn-success"
+            class="btn btn-success btn-sm"
             *ngIf="m.Status === 'Available'"
             (click)="reserve(m)"
           >
             Reserve
           </button>
-
           <button
-            class="btn btn-danger"
+            class="btn btn-danger btn-sm"
             *ngIf="m.Status === 'Reserved by you'"
             (click)="cancelReservation(m)"
           >
             Cancel
           </button>
-
           <button
-            class="btn btn-secondary"
-            *ngIf="m.Status === 'Reserve by other'"
+            class="btn btn-secondary btn-sm"
+            *ngIf="m.Status === 'Reserved by other'"
             (click)="joinWaitlist(m)"
           >
             Join Waitlist

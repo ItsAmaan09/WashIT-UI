@@ -3,5 +3,6 @@ export class Machine {
   MachineName!: string;
   WashTypeId: number = 0;
   IsActive!: boolean;
+  ReservationId?: number;
   Status!: string; // available , Reservedbyyou, occupied
 }

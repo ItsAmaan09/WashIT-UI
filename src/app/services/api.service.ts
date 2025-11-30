@@ -39,15 +39,9 @@ export class ApiService {
     return this.http.get<Machine[]>(`${this.baseAPIurl}reservations/machines`);
   }
 
-  checkMachineAvailability(id: number, userName: string): Observable<string> {
-    return this.http
-      .get<{ status: string }>(
-        `${this.baseAPIurl}reservations/checkMachineAvailability?id=${id}&userName=${userName}`
-      )
-      .pipe(map(x => x.status));
-  }
-
-  getReservationByMachine(id: number, userName: string): Observable<Reservation> {
-    return this.http.get<Reservation>(`${this.baseAPIurl}reservations/by-machine?machineId=${id}&userName=${userName}`);
+  getMachinesWithStatus() {
+    return this.http.get<Machine[]>(
+      `${this.baseAPIurl}reservations/GetMachinesWithStatus`
+    );
   }
 }

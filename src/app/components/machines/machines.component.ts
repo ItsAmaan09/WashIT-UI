@@ -4,6 +4,8 @@ import { Machine } from '../../models/machine';
 import { CommonModule } from '@angular/common';
 import { WashType } from '../../utility/enums/washType';
 import { forkJoin, map, switchMap } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-machines',
@@ -14,46 +16,25 @@ import { forkJoin, map, switchMap } from 'rxjs';
 })
 export class MachinesComponent implements OnInit {
   machines: Machine[] = [];
-  userName = 'peter';
+  userName: string = '';
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.getMachines();
   }
 
-  getMachines(): void {
-    this.apiService
-      .getMachines()
-      .pipe(
-        switchMap((machines: any) => {
-          // For each machine, create an observable that fetches availability
-          const availabilityCalls = machines.map((machine: any) =>
-            this.apiService
-              .checkMachineAvailability(machine.Id, this.userName)
-              .pipe(
-                map((status: any) => {
-                  machine.Status = status;
-                  return machine;
-                })
-              )
-          );
-
-          // Wait for ALL calls to finish
-          return forkJoin(availabilityCalls);
-        })
-      )
-      .subscribe({
-        next: (machinesWithStatus: any) => {
-          this.machines = machinesWithStatus;
-        },
-        error: (err) => {
-          console.error(err);
-        },
-        complete: () => {
-          console.log('called success.');
-        },
-      });
+  getMachines() {
+    this.apiService.getMachinesWithStatus().subscribe({
+      next: (data) => {
+          this.machines = data;
+      },
+      error: (err) => console.error(err),
+    });
   }
 
   getWashTypeName(id: number): string {
@@ -61,36 +42,28 @@ export class MachinesComponent implements OnInit {
   }
 
   reserve(machine: any) {
-    const dto: any = {
-      userName: this.userName,
-      washTypeId: machine.washTypeId,
-    };
-
-    this.apiService.reserve(dto).subscribe(() => {
-      alert('Reserved successfully!');
-      this.getMachines();
+    this.apiService.reserve(machine.WashTypeId).subscribe({
+      next: () => this.getMachines(),
+      error: (err) => alert(err.error),
     });
   }
 
-  cancelReservation(machine: Machine) {
-    this.apiService
-      .getReservationByMachine(machine.Id, this.userName)
-      .subscribe((data) => {
-        this.apiService.cancel(data.Id).subscribe(() => {
-          alert('Cancelled successfully!');
-          this.getMachines();
-        });
-      });
+  cancelReservation(machine: any) {
+    this.apiService.cancel(machine.ReservationId).subscribe({
+      next: () => this.getMachines(),
+      error: (err) => alert(err.error),
+    });
   }
 
   joinWaitlist(machine: any) {
-    const dto: any = {
-      userName: this.userName,
-      washTypeId: machine.washTypeId,
-    };
-
-    this.apiService.waitlist(dto).subscribe(() => {
-      alert('Added to waiting list.');
+    this.apiService.waitlist(machine.WashTypeId).subscribe({
+      next: () => alert('You are added to waiting list!'),
+      error: (err) => alert(err.error),
     });
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
