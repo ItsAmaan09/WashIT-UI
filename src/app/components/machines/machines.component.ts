@@ -3,9 +3,11 @@ import { ApiService } from '../../services/api.service';
 import { Machine } from '../../models/machine';
 import { CommonModule } from '@angular/common';
 import { WashType } from '../../utility/enums/washType';
-import { forkJoin, map, switchMap } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { MakeReservationDto } from '../../models/makeReservationDto';
+import { CancelReservationDto } from '../../models/cancelReservationDto';
+import { JoinWaitingListDto } from '../../models/joinWaitingListDto';
 
 @Component({
   selector: 'app-machines',
@@ -31,7 +33,7 @@ export class MachinesComponent implements OnInit {
   getMachines() {
     this.apiService.getMachinesWithStatus().subscribe({
       next: (data) => {
-          this.machines = data;
+        this.machines = data;
       },
       error: (err) => console.error(err),
     });
@@ -41,23 +43,35 @@ export class MachinesComponent implements OnInit {
     return WashType[id];
   }
 
-  reserve(machine: any) {
-    this.apiService.reserve(machine.WashTypeId).subscribe({
+  reserve(washTypeId: number) {
+    const makeReservation: MakeReservationDto = {
+      WashTypeId: washTypeId,
+    };
+
+    this.apiService.reserve(makeReservation).subscribe({
+      next: () => this.getMachines(),
+      error: (err) => alert(JSON.stringify(err.error)),
+    });
+  }
+
+  cancelReservation(reservationId?: number) {
+    const cancelReservationDto: CancelReservationDto = {
+      ReservationId: reservationId,
+    };
+
+    this.apiService.cancel(cancelReservationDto).subscribe({
       next: () => this.getMachines(),
       error: (err) => alert(err.error),
     });
   }
 
-  cancelReservation(machine: any) {
-    this.apiService.cancel(machine.ReservationId).subscribe({
-      next: () => this.getMachines(),
-      error: (err) => alert(err.error),
-    });
-  }
+  joinWaitlist(washTypeId: number) {
+    const joinWaitingListDto: JoinWaitingListDto = {
+      WashTypeId: washTypeId,
+    };
 
-  joinWaitlist(machine: any) {
-    this.apiService.waitlist(machine.WashTypeId).subscribe({
-      next: () => alert('You are added to waiting list!'),
+    this.apiService.waitlist(joinWaitingListDto).subscribe({
+      next: () => alert('Added to waiting list'),
       error: (err) => alert(err.error),
     });
   }

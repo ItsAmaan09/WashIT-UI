@@ -39,26 +39,26 @@
       <tr *ngFor="let m of machines">
         <td>{{ m.MachineName }}</td>
         <td>{{ getWashTypeName(m.WashTypeId) }}</td>
-        <td>{{ m.IsActive ? "Yes" : "No" }}</td>
+        <td>{{ m.Status }}</td>
         <td>
           <button
             class="btn btn-success btn-sm"
             *ngIf="m.Status === 'Available'"
-            (click)="reserve(m)"
+            (click)="reserve(m.WashTypeId)"
           >
             Reserve
           </button>
           <button
             class="btn btn-danger btn-sm"
             *ngIf="m.Status === 'Reserved by you'"
-            (click)="cancelReservation(m)"
+            (click)="cancelReservation(m.ReservationId)"
           >
             Cancel
           </button>
           <button
             class="btn btn-secondary btn-sm"
             *ngIf="m.Status === 'Reserved by other'"
-            (click)="joinWaitlist(m)"
+            (click)="joinWaitlist(m.WashTypeId)"
           >
             Join Waitlist
           </button>

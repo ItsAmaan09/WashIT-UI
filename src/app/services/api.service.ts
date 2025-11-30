@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { environement } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Machine } from '../models/machine';
-import { MakeReservation } from '../models/makeReservation';
-import { CancelReservation } from '../models/cancelReservation';
-import { JoinWaitingList } from '../models/joinWaitingList';
-import { Reservation } from '../models/reservation';
+import { CancelReservationDto } from '../models/cancelReservationDto';
+import { JoinWaitingListDto } from '../models/joinWaitingListDto';
+import { MakeReservationDto } from '../models/makeReservationDto';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -14,23 +13,23 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  reserve(payload: MakeReservation): Observable<MakeReservation> {
-    return this.http.post<MakeReservation>(
+  reserve(payload: MakeReservationDto): Observable<MakeReservationDto> {
+    return this.http.post<MakeReservationDto>(
       `${this.baseAPIurl}reservations/reserve`,
       payload
     );
   }
 
-  cancel(id: number): Observable<CancelReservation> {
-    return this.http.post<CancelReservation>(
+  cancel(payload: CancelReservationDto): Observable<CancelReservationDto> {
+    return this.http.post<CancelReservationDto>(
       `${this.baseAPIurl}reservations/cancel`,
-      id
+      payload
     );
   }
 
-  waitlist(payload: JoinWaitingList): Observable<JoinWaitingList> {
-    return this.http.post<JoinWaitingList>(
-      `${this.baseAPIurl}reservation/waitlist`,
+  waitlist(payload: JoinWaitingListDto): Observable<JoinWaitingListDto> {
+    return this.http.post<JoinWaitingListDto>(
+      `${this.baseAPIurl}reservations/waitlist`,
       payload
     );
   }
