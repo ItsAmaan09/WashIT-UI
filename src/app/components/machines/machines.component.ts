@@ -61,8 +61,11 @@ export class MachinesComponent implements OnInit {
         };
 
         this.apiService.reserve(makeReservation).subscribe({
-          next: () => this.getMachines(),
-          error: (err) => alert(JSON.stringify(err.error)),
+          next: () => {
+            this.getMachines(),
+              alert(`${machine.MachineName} is Reserved Success`);
+          },
+          error: (err) => alert(err.error.message),
         });
       }
     });
@@ -78,8 +81,11 @@ export class MachinesComponent implements OnInit {
         };
 
         this.apiService.cancel(cancelReservationDto).subscribe({
-          next: () => this.getMachines(),
-          error: (err) => alert(err.error),
+          next: () => {
+            this.getMachines(),
+              alert(`${machine.MachineName} is Cancel Success`);
+          },
+          error: (err) => alert(err.error.message),
         });
       }
     });
@@ -95,8 +101,11 @@ export class MachinesComponent implements OnInit {
         };
 
         this.apiService.waitlist(joinWaitingListDto).subscribe({
-          next: () => alert('Added to waiting list'),
-          error: (err) => alert(err.error),
+          next: () => {
+            alert('Added to waiting list');
+            this.getMachines();
+          },
+          error: (err) => alert(err.error.message),
         });
       }
     });
