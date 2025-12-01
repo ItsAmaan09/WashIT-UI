@@ -112,14 +112,20 @@ export class MachinesComponent implements OnInit {
   }
 
   logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+    this.openConfirm('Are you sure you want to logout???').subscribe((result)=> {
+      if (result) {
+        this.authService.logout();
+        this.router.navigate(['/login']);
+      }
+    });
   }
 
   openConfirm(message: string) {
     return this.dialog
       .open(ConfirmDialogComponent, {
+        width: '420px',
         data: { message },
+        panelClass: 'custom-dialog-container'
       })
       .afterClosed();
   }

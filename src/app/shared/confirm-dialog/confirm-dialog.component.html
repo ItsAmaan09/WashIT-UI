@@ -1,19 +1,19 @@
-<div class="dialog-container">
+<div class="">
 
-  <h2 mat-dialog-title class="dialog-title">
+  <h3 mat-dialog-title class="ms-3">
     Confirmation
-  </h2>
+  </h3>
 
-  <mat-dialog-content class="dialog-content">
+  <mat-dialog-content class="">
     {{ data.message }}
   </mat-dialog-content>
 
-  <mat-dialog-actions align="end" class="dialog-actions">
-    <button mat-stroked-button color="warn" (click)="dialogRef.close(false)">
+  <mat-dialog-actions align="end" class="">
+    <button class="btn btn-secondary me-2" mat-stroked-button color="warn" (click)="dialogRef.close(false)">
       No
     </button>
 
-    <button mat-raised-button color="primary" (click)="dialogRef.close(true)">
+    <button class="btn btn-primary" mat-raised-button color="primary" (click)="dialogRef.close(true)">
       Yes
     </button>
   </mat-dialog-actions>
