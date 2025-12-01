@@ -14,7 +14,9 @@ import { Router, RouterModule } from '@angular/router';
 export class LoginComponent implements OnInit {
   userName = '';
   password = '';
-  error: string = '';
+  errorUserName: string = '';
+  errorPassword: string = '';
+  isLoginClicked: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
   ngOnInit(): void {
@@ -24,18 +26,32 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin() {
+    this.isLoginClicked = true;
+
     this.authService
       .login({ username: this.userName, password: this.password })
       .subscribe({
         next: (res) => {
-          debugger;
           this.router.navigate(['/home']);
-          console.log('Login Success');
+          alert('Login Success');
         },
-        error: (err) => {
-          alert(JSON.stringify(err));
-          this.error = 'Invalid Credentials';
+        error: (ex) => {
+          this.errorUserName = '';
+          this.errorPassword = '';
+          if (ex.error?.errors) {
+            const errors = ex.error.errors;
+            if (errors.UserName) this.errorUserName = errors.UserName[0];
+            if (errors.Password) this.errorPassword = errors.Password[0];
+          }
+          if(ex.error?.Message) {
+            alert(ex.error?.Message)
+          }
         },
       });
+  }
+
+  onInputChange() {
+    if(this.userName) this.errorUserName = '';
+    if(this.password) this.errorPassword = '';
   }
 }

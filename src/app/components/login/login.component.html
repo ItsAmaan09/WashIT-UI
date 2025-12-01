@@ -1,10 +1,42 @@
-<div class="login-container">
-  <h2>Login</h2>
+<div
+  class="d-flex login-box justify-content-center align-items-center vh-100 bg-light"
+>
+  <div class="card-shadow p-4" style="width: 360px; border-radius: 15px">
+    <h2 class="text-center mb-4">Login</h2>
 
-  <input type="text" [(ngModel)]="userName" placeholder="Username" />
-  <input type="password" [(ngModel)]="password" placeholder="Password" />
+    <div class="mb-3">
+      <input
+        class="form-control"
+        type="text"
+        [(ngModel)]="userName"
+        name="userName"
+        placeholder="Username"
+        (input)="onInputChange()"
+      />
+    </div>
+    <div *ngIf="isLoginClicked && !userName" class="text-danger">
+      {{ errorUserName }}
+    </div>
+    <div class="mb-3">
+      <input
+        class="form-control"
+        type="password"
+        [(ngModel)]="password"
+        name="password"
+        placeholder="Password"
+        (input)="onInputChange()"
+      />
+    </div>
+    <div *ngIf="isLoginClicked && !password" class="text-danger">
+      {{ errorPassword }}
+    </div>
 
-  <button (click)="onLogin()">Login</button>
-
-  <p style="color:red;" *ngIf="error">{{ error }}</p>
+    <button
+      class="btn btn-primary w-100"
+      (click)="onLogin()"
+      [disabled]="isLoginClicked && (!userName || !password)"
+    >
+      Login
+    </button>
+  </div>
 </div>
