@@ -97,6 +97,7 @@ export class MachinesComponent implements OnInit {
     ).subscribe((result) => {
       if (result) {
         const joinWaitingListDto: JoinWaitingListDto = {
+          MachineId: machine.Id,
           WashTypeId: machine.WashTypeId,
         };
 
