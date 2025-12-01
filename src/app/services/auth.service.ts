@@ -16,6 +16,7 @@ export class AuthService {
         tap((res: any) => {
           if(res?.token) {
             localStorage.setItem('token', res.token);
+            localStorage.setItem('username', res.UserName);
           }
         })
       );
@@ -23,6 +24,7 @@ export class AuthService {
 
     logout() {
       localStorage.removeItem('token');
+      localStorage.removeItem('UserName');
     }
 
     getToken() {

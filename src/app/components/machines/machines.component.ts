@@ -25,7 +25,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class MachinesComponent implements OnInit {
   machines: Machine[] = [];
-  userName: string = '';
+  userName: string = localStorage.getItem('username') ?? '';
   constructor(
     private apiService: ApiService,
     private authService: AuthService,
@@ -78,6 +78,7 @@ export class MachinesComponent implements OnInit {
       if (result) {
         const cancelReservationDto: CancelReservationDto = {
           ReservationId: machine.ReservationId,
+          MachineId: machine.Id
         };
 
         this.apiService.cancel(cancelReservationDto).subscribe({
