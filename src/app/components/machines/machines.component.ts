@@ -26,7 +26,6 @@ import { MatButtonModule } from '@angular/material/button';
 export class MachinesComponent implements OnInit {
   machines: Machine[] = [];
   userName: string = '';
-
   constructor(
     private apiService: ApiService,
     private authService: AuthService,
@@ -57,6 +56,7 @@ export class MachinesComponent implements OnInit {
     ).subscribe((result) => {
       if (result) {
         const makeReservation: MakeReservationDto = {
+          MachineId: machine.Id,
           WashTypeId: machine.WashTypeId,
         };
 
@@ -112,12 +112,14 @@ export class MachinesComponent implements OnInit {
   }
 
   logout() {
-    this.openConfirm('Are you sure you want to logout???').subscribe((result)=> {
-      if (result) {
-        this.authService.logout();
-        this.router.navigate(['/login']);
+    this.openConfirm('Are you sure you want to logout???').subscribe(
+      (result) => {
+        if (result) {
+          this.authService.logout();
+          this.router.navigate(['/login']);
+        }
       }
-    });
+    );
   }
 
   openConfirm(message: string) {
@@ -125,7 +127,7 @@ export class MachinesComponent implements OnInit {
       .open(ConfirmDialogComponent, {
         width: '420px',
         data: { message },
-        panelClass: 'custom-dialog-container'
+        panelClass: 'custom-dialog-container',
       })
       .afterClosed();
   }
